@@ -1,4 +1,5 @@
 import requests
+import random
 
 V4_TOKEN = ""
 
@@ -36,10 +37,14 @@ def get_movie_runtime(movie_id: int) -> int:
     return result.get('runtime', 0)
 
 
-def get_popular_movies(list_len: int = 8) -> dict:
+def get_popular_movies(list_len: int = 8) -> list:
     url = "https://api.themoviedb.org/3/movie/popular"
     result = get_tmdb_response(url)
-    return result.get('results')[:list_len]
+    try:
+        rand_movie_list = random.sample(result.get('results'), k=list_len)
+        return rand_movie_list
+    except ValueError:
+        return result.get('results')[:list_len]
 
 
 def get_poster_url(api_image_path: str, size: str = 'w342') -> str:
