@@ -5,20 +5,29 @@
         <h1 class="mt-5">Witaj w mojej bibliotece filmów</h1>
         <p class="lead">Znajdziesz tu tylko najlepsze tytuły!</p>
     </div>
+    <div class="col-lg-12 mb-4">
+        {% for list in list_types %}
+            {% if list == selected %}
+            <a href="{{ url_for('homepage', list_type=list) }}" class="btn btn-info">{{ list|replace('_', ' ')|title }}</a>
+            {% else %}
+            <a href="{{ url_for('homepage', list_type=list) }}" class="btn btn-outline-info">{{ list|replace('_', ' ')|title }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
     {% for movie in movies %}
     <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
         <div class="card h-100 border-dark">
             <div class="card-header bg-dark text-light">
-                <h4 class="card-title">Tytuł filmu</h4>
+                <h4 class="card-title">{{ movie.title }}</h4>
             </div>
-            <img class="card-img-top" src="http://placehold.it/300x500" alt="">
+            <img class="card-img-top" src="{{ tmdb_image_url(movie.poster_path, 'w342') }}" alt="">
             <ul class="list-group">
-                    <li class="list-group-item">Gatunek: Palceholder</li>
-                    <li class="list-group-item">Czas: 112 min.</li>
-                    <li class="list-group-item">Rok wydania : YYYY</li>
-                </ul>
+                <li class="list-group-item">Gatunek: {{ tmdb_return_genres(movie.genre_ids) }}</li>
+                <li class="list-group-item">Czas: {{ tmdb_movie_runtime(movie.id) }} min.</li>
+                <li class="list-group-item">Data wydania : {{ movie.release_date }}</li>
+            </ul>
             <div class="card-footer text-center">
-                <a href="#" class="btn btn-primary">Pokaż więcej</a>
+                <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="btn btn-primary">Pokaż więcej</a>
             </div>
         </div>
     </div>
