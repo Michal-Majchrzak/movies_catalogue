@@ -35,7 +35,7 @@ def test_get_random_movie_backdrop(monkeypatch):
 
 
 def test_get_random_movie_backdrop_empty_list(monkeypatch):
-    result = []
+    result = ''
 
     get_tmdb_response_mock = Mock()
     get_tmdb_response_mock.return_value = {}
