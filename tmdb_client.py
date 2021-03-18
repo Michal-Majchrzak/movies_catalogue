@@ -2,7 +2,7 @@ import requests
 import random
 
 V4_TOKEN = ""
-MOVIE_GENERES = []
+MOVIE_GENERES = {}
 
 
 def get_tmdb_response(url: str) -> dict:
@@ -52,7 +52,7 @@ def get_random_movie_backdrop(movie_id: int) -> str:
             index -= 1
         return result[index].get('file_path', '')
     except IndexError:
-        return []
+        return ""
 
 
 def get_single_movie(movie_id: int) -> dict:

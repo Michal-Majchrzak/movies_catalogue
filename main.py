@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for
 from movies_catalogue import tmdb_client
 
 app = Flask(__name__)
-tmdb_client.MOVIE_GENERES = tmdb_client.build_movies_genres_dict_from_tmdb_api()
 LIST_TYPES = ['now_playing', 'popular', 'top_rated', 'upcoming']
 
 
