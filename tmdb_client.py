@@ -2,6 +2,7 @@ import requests
 import random
 
 V4_TOKEN = ""
+MOVIE_GENERES = []
 
 
 def get_tmdb_response(url: str) -> dict:
@@ -11,7 +12,7 @@ def get_tmdb_response(url: str) -> dict:
     return response.json()
 
 
-def _get_movies_genres():
+def build_movies_genres_dict_from_tmdb_api() -> dict:
     url = "https://api.themoviedb.org/3/genre/movie/list"
     genres = get_tmdb_response(url).get('genres')
     result = {}
@@ -22,13 +23,13 @@ def _get_movies_genres():
     return result
 
 
-MOVIE_GENERES = _get_movies_genres()
-
-
 def return_movie_genres(genre_ids: list) -> str:
     result = ""
     for genre_id in genre_ids:
-        result += f"{MOVIE_GENERES.get(genre_id, '')}, "
+        try:
+            result += f"{MOVIE_GENERES.get(genre_id, '')}, "
+        except AttributeError:
+            continue
     return result
 
 
