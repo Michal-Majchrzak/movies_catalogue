@@ -17,19 +17,23 @@ def build_movies_genres_dict_from_tmdb_api() -> dict:
     genres = get_tmdb_response(url).get('genres')
     result = {}
 
-    for genre in genres:
-        result[genre['id']] = genre['name']
+    try:
+        for genre in genres:
+            result[genre['id']] = genre['name']
+    except TypeError:
+        return {}
 
     return result
 
 
 def return_movie_genres(genre_ids: list) -> str:
-    result = ""
+    genre_list = []
     for genre_id in genre_ids:
-        try:
-            result += f"{MOVIE_GENERES.get(genre_id, '')}, "
-        except AttributeError:
-            continue
+        genre_name = MOVIE_GENERES.get(genre_id)
+        if genre_name:
+            genre_list.append(genre_name)
+
+    result = ', '.join(genre_list)
     return result
 
 
@@ -43,7 +47,12 @@ def get_random_movie_backdrop(movie_id: int) -> str:
     url = f"https://api.themoviedb.org/3/movie/{movie_id}/images"
     result = get_tmdb_response(url).get('backdrops', [])
     index = random.randint(0, len(result))
-    return result[index].get('file_path', '')
+    try:
+        if index == len(result):
+            index -= 1
+        return result[index].get('file_path', '')
+    except IndexError:
+        return []
 
 
 def get_single_movie(movie_id: int) -> dict:
