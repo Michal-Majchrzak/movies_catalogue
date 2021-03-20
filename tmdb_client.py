@@ -1,12 +1,13 @@
 import requests
 import random
+import os
 
-V4_TOKEN = ""
+API_TOKEN = os.environ.get('TMDB_API_TOKEN', "")
 MOVIE_GENERES = {}
 
 
 def get_tmdb_response(url: str) -> dict:
-    headers = {'Authorization': f"Bearer {V4_TOKEN}"}
+    headers = {'Authorization': f"Bearer {API_TOKEN}"}
     response = requests.get(url, headers=headers)
     response.raise_for_status()
     return response.json()
